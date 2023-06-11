@@ -129,24 +129,37 @@ struct Node
  
  int h=-1;
  vector<int>ans;
- void leftview(Node *x,int height){
-     if(height>h){
-         h=height;
-         ans.push_back(x->data);
-     }
-     if(x->left)
-        leftview(x->left,height+1);
-    if(x->right)
-        leftview(x->right,height+1);
- }
 
 //Function to return a list containing elements of left view of the binary tree.
 vector<int> leftView(Node *root)
 {
    // Your code here
    ans.clear();
-   h=-1;
-   if(root)
-    leftview(root,0);
-   return ans;
+  queue<Node*>q1,q2;
+  if(root)
+  q1.push(root);
+  while(!q1.empty() || !q2.empty()){
+      if(!q1.empty()){
+          ans.push_back(q1.front()->data);
+          while(!q1.empty()){
+              Node* tp=q1.front();
+              q1.pop();
+              if(tp->left)
+                q2.push(tp->left);
+              if(tp->right)
+                q2.push(tp->right);
+          }
+      }else{
+           ans.push_back(q2.front()->data);
+          while(!q2.empty()){
+              Node* tp=q2.front();
+              q2.pop();
+              if(tp->left)
+                q1.push(tp->left);
+              if(tp->right)
+                q1.push(tp->right);
+          }
+      }
+  }
+  return ans;
 }
