@@ -41,7 +41,7 @@ public:
 
     void oxygen(function<void()> releaseOxygen) {
         unique_lock<std::mutex> lck(mtx);
-        while (d <= -1) {
+        while (d < 0) {
             cv.wait(lck);
         }
         // releaseOxygen() outputs "O". Do not change or remove this line.
