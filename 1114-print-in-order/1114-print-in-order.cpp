@@ -27,15 +27,15 @@ public:
         unique_lock<mutex> lck2(secondMutex);
         secondDone=1;
         secondJobDone.notify_all();
+        firstDone=0;
         
     }
 
     void third(function<void()> printThird) {
-        // unique_lock<mutex> lck1(firstMutex);
-        // firstJobDone.wait(lck1,[this](){return firstDone==1;});
         unique_lock<mutex> lck2(secondMutex);
         secondJobDone.wait(lck2,[this](){return secondDone==1;});
         // printThird() outputs "third". Do not change or remove this line.
         printThird();
+        secondDone=0;
     }
 };
